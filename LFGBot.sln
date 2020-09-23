@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFGBot", "LFGBot.csproj", "{4D698BD5-585A-4749-A5CE-171F9A9D7618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFGBot", "LFGBot\LFGBot.csproj", "{4D698BD5-585A-4749-A5CE-171F9A9D7618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFGBotUtils", "LFGBotUtils\LFGBotUtils.csproj", "{D6D80375-D94E-4E09-8E0B-C332DB1A4F07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{4D698BD5-585A-4749-A5CE-171F9A9D7618}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D698BD5-585A-4749-A5CE-171F9A9D7618}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D698BD5-585A-4749-A5CE-171F9A9D7618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D80375-D94E-4E09-8E0B-C332DB1A4F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D80375-D94E-4E09-8E0B-C332DB1A4F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D80375-D94E-4E09-8E0B-C332DB1A4F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D80375-D94E-4E09-8E0B-C332DB1A4F07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
