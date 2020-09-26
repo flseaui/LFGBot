@@ -90,7 +90,7 @@ class Program
         await _client.LoginAsync(
             TokenType.Bot, Environment.GetEnvironmentVariable("DiscordToken")
         );
-        
+
         await _client.StartAsync();
 
         await Task.Delay(Timeout.Infinite);

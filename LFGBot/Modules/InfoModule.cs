@@ -1,19 +1,57 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Timers;
 using Discord.Commands;
+using Discord.WebSocket;
 
 namespace LFGBot.Modules
 {
     public class InfoModule : ModuleBase<SocketCommandContext>
     {
-        private FileInfo[] _texts;
+        
         private readonly Random _random;
-
+        private readonly Timer _timer;
+        
+        private ISocketMessageChannel _channel;
+        private FileInfo[] _texts;
+        //this will get exponentially slower but who cares for now
+        private List<int> _usedQuotes;
+        
+        
         public InfoModule()
         {
+            _usedQuotes = new List<int>();
             _texts = new DirectoryInfo(@"C:\Users\Rewind\Desktop\LFGDeepTexts").GetFiles();
             _random = new Random();
+            
+            _timer = new Timer(5000)
+            {
+                AutoReset = true
+            };
+            _timer.Elapsed += TimerOnElapsed;
+            //_timer.Enabled = true;
+        }
+        
+        private void TimerOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (_channel is null)
+                return;
+            
+            Console.WriteLine("deeeeeeeeeeez");
+            _channel.SendMessageAsync(
+                "Message"
+            ).RunSynchronously();
+            
+        }
+
+        [Command("setchannel")]
+        [RequireOwner]
+        public async Task SetChannel()
+        {
+            _channel = Context.Channel;
+            await Context.Channel.SendMessageAsync($"Bot message channel set to {Context.Channel.Name}");
         }
         
         [Command("deep")]
@@ -22,13 +60,32 @@ namespace LFGBot.Modules
         {
             var text = File.ReadAllLines(_texts[_random.Next(0, _texts.Length - 1)].FullName);
 
-            var msg = "";
-
+            string line;
+            int lineNum;
+            var linesChecked = 0;
+            
             do
             {
-                msg = text[_random.Next(0, text.Length - 1)];
+                //could do this better but who cares for now
+                if (linesChecked > text.Length)
+                {
+                    return ReplyAsync("[Warning] OUT OF PRE-GENERATED MESSAGES. PLEASE PING CLAIRE.");
+                }
+                ++linesChecked;
+                lineNum = _random.Next(0, text.Length - 1);
+                line = text[lineNum];
             }
-            while (msg.StartsWith("==="));
+            while (!line.StartsWith("===") || (!line.StartsWith("===") && _usedQuotes.Contains(lineNum)));
+            
+            _usedQuotes.Add(lineNum);
+            
+            ++lineNum;
+            
+            var msg = "";
+            
+            for (var i = 0; lineNum + i < text.Length && !text[lineNum + i].StartsWith("==="); ++i) {
+                msg += text[lineNum + i] + Environment.NewLine;
+            }
 
             return ReplyAsync(msg);
         }

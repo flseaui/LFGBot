@@ -29,7 +29,11 @@ namespace LFGBotUtils
                     {
                         var content = msg["content"].ToString();
                         if (content != "" && !content.StartsWith("https"))
-                            outputFile.WriteLine("<|startoftext|>" + msg["content"] + "<|endoftext|>");
+                        {
+                            outputFile.WriteLine(msg["content"]);
+                            //outputFile.WriteLine("<|startoftext|>" + msg["content"] + "<|endoftext|>");
+                        }
+
                         //messages.Add(msg["content"].ToString());
                         //Console.WriteLine(msg["content"]);
                     }
