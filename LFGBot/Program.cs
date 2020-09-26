@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -87,8 +87,10 @@ class Program
     {
         await InitCommands();
 
-        await _client.LoginAsync(TokenType.Bot,
-            Environment.GetEnvironmentVariable("DiscordToken"));
+        await _client.LoginAsync(
+            TokenType.Bot, Environment.GetEnvironmentVariable("DiscordToken")
+        );
+        
         await _client.StartAsync();
 
         await Task.Delay(Timeout.Infinite);
