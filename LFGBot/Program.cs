@@ -7,6 +7,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using LFGBot.Modules;
+using LFGBot.Services;
 
 class Program
 {
@@ -45,6 +46,7 @@ class Program
         });
         
         _client.Log += Log;
+        _client.Disconnected += OnDisconnect;
         _commands.Log += Log;
         
         _services = ConfigureServices();
@@ -52,12 +54,12 @@ class Program
     }
     private static IServiceProvider ConfigureServices()
     {
-        var map = new ServiceCollection(); 
-            //.AddSingleton(new SomeServiceClass());
+        var map = new ServiceCollection()
+            .AddSingleton(new DeepService());
             
         return map.BuildServiceProvider();
     }
-    
+
     private static Task Log(LogMessage message)
     {
         switch (message.Severity)
@@ -83,6 +85,13 @@ class Program
         return Task.CompletedTask;
     }
 
+    private static Task OnDisconnect(Exception exception)
+    {
+        Console.WriteLine("SDFKLSDLK:FSDLKFSLDKJFLKSD");
+        
+        return Task.CompletedTask;
+    }
+    
     private async Task MainAsync()
     {
         await InitCommands();
@@ -112,7 +121,7 @@ class Program
         if (msg.Author.Id == _client.CurrentUser.Id || msg.Author.IsBot) return;
         
         int pos = 0;
-        if (msg.HasCharPrefix('!', ref pos) /* || msg.HasMentionPrefix(_client.CurrentUser, ref pos) */)
+        if (msg.HasCharPrefix('#', ref pos) /* || msg.HasMentionPrefix(_client.CurrentUser, ref pos) */)
         {
             var context = new SocketCommandContext(_client, msg);
             
