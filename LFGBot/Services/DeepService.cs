@@ -39,7 +39,7 @@ namespace LFGBot.Services
                 AutoReset = true
             };
             _timer.Elapsed += TimerOnElapsed;
-            _timer.Enabled = true;
+            _timer.Enabled = false;
 
             var text = new List<string>();
             
@@ -75,6 +75,11 @@ namespace LFGBot.Services
             Channel?.SendMessageAsync(
                 GetMessage()
             ).RunSynchronously();
+        }
+
+        public void ToggleTimer(bool on)
+        {
+            _timer.Enabled = on;
         }
         
         public string GetMessage()

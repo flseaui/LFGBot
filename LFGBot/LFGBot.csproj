@@ -10,4 +10,8 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0-rc.1.20451.14" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\Release\netcoreapp3.1\LFGBot.exe" />
+    </ItemGroup>
+
 </Project>
