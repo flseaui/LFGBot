@@ -13,8 +13,4 @@
       <Folder Include="TargetJson" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="obj\Release\netcoreapp3.1\LFGBotUtils.exe" />
-    </ItemGroup>
-
 </Project>

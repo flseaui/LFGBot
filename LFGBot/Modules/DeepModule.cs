@@ -24,13 +24,23 @@ namespace LFGBot.Modules
 
         [Command("setchannel")]
         [RequireOwner]
-        public async Task SetChannel(ISocketMessageChannel channel = null)
+        public async Task SetChannel(string channelName = "", ISocketMessageChannel channel = null)
         {
-            if (channel != null)
+            //bone zone
+            if (channelName == "bonezone")
+                _deepService.Channel = (ISocketMessageChannel) Context.Client.GetChannel(756866747193098310);
+            else
+            {
+                //lfg
+                _deepService.Channel = (ISocketMessageChannel) Context.Client.GetChannel(761336005273583617);
+            }
+
+
+            /*if (channel != null)
                 _deepService.Channel = channel;
             else
-                _deepService.Channel = Context.Channel;
-            await Context.Channel.SendMessageAsync($"Bot message channel set to {channel.Name}");
+                _deepService.Channel = Context.Channel;*/
+            await Context.Channel.SendMessageAsync($"Bot message channel set to {_deepService.Channel.Name}");
         }
 
         [Command("info")]
@@ -124,7 +134,7 @@ namespace LFGBot.Modules
                 }
             }
 
-            finalMsg += "\n ​";
+            finalMsg += "​";
             
             await _deepService.Channel.SendMessageAsync(finalMsg);
         }
