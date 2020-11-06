@@ -6,7 +6,7 @@ using Discord.WebSocket;
 
 namespace LFGBot.Services
 {
-    public class DeepService
+    public class OldDeepService
     {
         private readonly Random _random;
         private readonly Timer _timer;
@@ -16,19 +16,13 @@ namespace LFGBot.Services
         private List<(int hash, string msg)> _usedQuotes;
         private List<(int hash, string msg)> _quotes;
 
-        private DateTime _lastPostTime;
-
-        private int _startMinute = 47;
-        
         public ISocketMessageChannel Channel;
 
-        public int IntervalHoursMins;
+        public int Interval;
         public int NumMessagesSent;
         public int NumImagesSent;
-
-        public int Interval;
         
-        public DeepService()
+        public OldDeepService()
         {
             _quotes = new List<(int, string)>();
             _usedQuotes = new List<(int, string)>();
@@ -36,21 +30,9 @@ namespace LFGBot.Services
             _texts = new DirectoryInfo(@"C:\Users\Rewind\Desktop\LFGDeepTexts").GetFiles();
 
             var infoText = File.ReadAllLines(@"C:\Users\Rewind\Desktop\LFGBotAdmin\LFGBotInfo.txt");
-
-            using (new StreamReader(Path.Combine(@"C:\Users\Rewind\Desktop\LFGBotAdmin", "LFGBotInfo.json")))
-            {
-                
-                
-            }
-            
-            var intervalHours = int.Parse(infoText[0]);
-            var intervalMins = int.Parse(infoText[1]);
-            var intervalSecs = int.Parse(infoText[2]);
-
-            Interval = new TimeSpan(intervalHours, intervalMins, intervalSecs).Milliseconds;
-            
-            NumMessagesSent = int.Parse(infoText[3]);
-            NumImagesSent = int.Parse(infoText[4]);
+            Interval = int.Parse(infoText[0]);
+            NumMessagesSent = int.Parse(infoText[1]);
+            NumImagesSent = int.Parse(infoText[2]);
 
             _timer = new Timer(Interval)
             {
@@ -59,7 +41,7 @@ namespace LFGBot.Services
             _timer.Elapsed += TimerOnElapsed;
             _timer.Enabled = false;
 
-            var span = new DateTime(2020, 10, 20, 1, 47, 10) - DateTime.Now;
+            var span = new DateTime(2020, 11, 6, 5, 47, 10) - DateTime.Now;
             var timer = new Timer {Interval = span.TotalMilliseconds, AutoReset = false};
             timer.Elapsed += (sender, e) =>
             {
@@ -101,27 +83,9 @@ namespace LFGBot.Services
             }
         }
 
-        private DateTime FindNextInterval()
-        {
-            if (_lastPostTime != default)
-                return _lastPostTime.AddHours(3);
-
-            var now = DateTime.Now;
-
-            if (now.Minute > _startMinute)
-            {
-                now = now.AddHours(1);
-                return new DateTime(now.Year, now.Month, now.Day, now.Hour, _startMinute, 1);
-            }
-
-            return new DateTime(now.Year, now.Month, now.Day, now.Hour, _startMinute - now.Minute, 1);
-        }
-        
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
             Console.WriteLine("DEEZCHAMP");
-            _lastPostTime = DateTime.Now;
-            
             Channel?.SendMessageAsync(
                 GetMessage()
             ).RunSynchronously();

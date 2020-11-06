@@ -15,9 +15,9 @@ namespace LFGBot.Modules
 {
     public class DeepModule : ModuleBase<SocketCommandContext>
     {
-        private readonly DeepService _deepService;
+        private readonly OldDeepService _deepService;
 
-        public DeepModule(DeepService deepService)
+        public DeepModule(OldDeepService deepService)
         {
             _deepService = deepService;
         }
@@ -58,8 +58,8 @@ namespace LFGBot.Modules
             builder.AddField("Number of deep messages sent", "0");
             builder.AddField("Number of images sent", "0");
             builder.AddField("Uptime", uptime.ToString(@"dd\.hh\:mm\:ss"));
-            
-            builder.WithThumbnailUrl(Context.Client.GetUser(756863887999238216).GetAvatarUrl());
+            // deep lfg - 756863887999238216
+            builder.WithThumbnailUrl(Context.Client.GetUser(774183377724899379).GetAvatarUrl());
             builder.WithColor(Color.Purple);
             
             await Context.Channel.SendMessageAsync("", false, builder.Build());
