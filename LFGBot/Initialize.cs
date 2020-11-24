@@ -52,10 +52,10 @@ namespace LFGBot
         {
             var map = new ServiceCollection()
                 .AddSingleton(_client)
-                .AddSingleton<CommandHandler>()
+                .AddSingleton(_commands)
                 .AddSingleton<OldDeepService>()
                 .AddSingleton<BoardService>()
-                .AddSingleton(_commands);
+                .AddSingleton<CommandHandler>();
             
             return map.BuildServiceProvider();
         }
@@ -102,7 +102,7 @@ namespace LFGBot
                 TokenType.Bot, Environment.GetEnvironmentVariable("DiscordToken")
             );
 
-            //Environment.GetEnvironmentVariable("TestDiscordToken"));
+            //Environment.GetEnvironmentVariable("testDiscordToken"));
             
             await _client.StartAsync();
 
