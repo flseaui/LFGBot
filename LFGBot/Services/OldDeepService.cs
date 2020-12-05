@@ -24,6 +24,8 @@ namespace LFGBot.Services
         
         public OldDeepService()
         {
+            return;
+            
             _quotes = new List<(int, string)>();
             _usedQuotes = new List<(int, string)>();
             _random = new Random();

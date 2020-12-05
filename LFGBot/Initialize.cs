@@ -25,7 +25,7 @@ namespace LFGBot
                 // If you or another service needs to do anything with messages
                 // (eg. checking Reactions, checking the content of edited/deleted messages),
                 // you must set the MessageCacheSize. You may adjust the number as needed.
-                //MessageCacheSize = 50,
+                MessageCacheSize = 50,
 
                 // If your platform doesn't have native WebSockets,
                 // add Discord.Net.Providers.WS4Net from NuGet,
@@ -102,7 +102,7 @@ namespace LFGBot
                 TokenType.Bot, Environment.GetEnvironmentVariable("DiscordToken")
             );
 
-            //Environment.GetEnvironmentVariable("testDiscordToken"));
+            //Environment.GetEnvironmentVariable("TestDiscordToken"));
             
             await _client.StartAsync();
 

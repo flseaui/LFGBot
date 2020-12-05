@@ -1,4 +1,4 @@
-﻿﻿namespace LFGBot
+﻿namespace LFGBot
 {
     internal static class Program
     {

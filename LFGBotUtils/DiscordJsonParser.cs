@@ -77,7 +77,7 @@ namespace LFGBotUtils
                 outputFile.Close();
             }
         }
-        
+
         /*static void Main(string[] args)
         {
 
@@ -114,7 +114,7 @@ namespace LFGBotUtils
                 }
                 outputFile.Close();
             }*/
-
+        
            //var outputJson = JsonConvert.SerializeObject(messages);
             
             //File.WriteAllText("../../../outputMessages.txt", outputJson);
