@@ -13,12 +13,12 @@ namespace LFGBot.Services
 
         private readonly DiscordSocketClient _client;
 
-        private readonly Dictionary<ulong, List<IMessage>> _cachedBoards = new Dictionary<ulong, List<IMessage>>();
+        private readonly Dictionary<ulong, List<IMessage>> _cachedBoards = new();
 
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
 
         // channelID  messageIDs
-        private Dictionary<ulong, HashSet<ulong>> _chosenMessages = new Dictionary<ulong, HashSet<ulong>>();
+        private Dictionary<ulong, HashSet<ulong>> _chosenMessages = new();
         
         public BoardService(DiscordSocketClient client)
         {
@@ -27,7 +27,7 @@ namespace LFGBot.Services
             _client.ReactionAdded += OnReactionAdded;
             _client.ReactionRemoved += OnReactionRemoved;
             _client.Ready += OnClientReady;
-            _client.MessageReceived += OnMessageRecieved;
+            _client.MessageReceived += OnMessageReceived;
             _client.MessageDeleted += OnMessageDelected;
         }
 
@@ -50,7 +50,7 @@ namespace LFGBot.Services
             return Task.CompletedTask;
         }
 
-        private Task OnMessageRecieved(SocketMessage msg)
+        private Task OnMessageReceived(SocketMessage msg)
         {
             if (_cachedBoards.ContainsKey(msg.Channel.Id))
                 _cachedBoards[msg.Channel.Id].Add(msg);

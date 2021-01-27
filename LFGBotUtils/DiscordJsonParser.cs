@@ -10,72 +10,65 @@ using Newtonsoft.Json.Linq;
 
 namespace LFGBotUtils
 {
-    public class DiscordJsonParser
+    public static class DiscordJsonParser
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var file = File.ReadAllText("../../../tweet.json");
+            var file = File.ReadAllText("../../../Misc/tweet.json");
 
-            using (var outputFile = new StreamWriter(Path.Combine("../../../", "outputTweets.txt"), false))
+            using var outputFile = new StreamWriter(Path.Combine("../../../Output/", "outputTweets.txt"), false);
+            dynamic jsonObj = JsonConvert.DeserializeObject<JObject>(file);
+
+            foreach (var tweet in jsonObj.tweets)
             {
-                dynamic jsonObj = JsonConvert.DeserializeObject<JObject>(file);
+                if (tweet.retweeted is object rtd && (bool) rtd)
+                    continue;
 
-                foreach (var tweet in jsonObj.tweets)
+                var tweetTxt = (string) tweet.tweet.full_text;
+                    
+                if (tweetTxt == "") continue;
+                
+                var startIndex = 0;
+
+                var rt = tweetTxt.StartsWith("RT");
+                if (tweetTxt[0] == '@' || rt)
                 {
-                    if (tweet.retweeted is object rtd && (bool) rtd)
-                        continue;
-
-                    var tweetTxt = (string) tweet.tweet.full_text;
-                    
-                    //Console.Write("a");
-                    
-                    if (tweetTxt != "")
+                    var start = rt ? 3 : 0;
+                    startIndex = start;
+                    for (var i = start; i < tweetTxt.Length; i++)
                     {
-                        //Console.WriteLine($"tweet: {tweetTxt}");
-                        var startIndex = 0;
+                        var character = tweetTxt[i];
 
-                        var rt = tweetTxt.StartsWith("RT");
-                        if (tweetTxt[0] == '@' || rt)
+                        if (character == '@')
                         {
-                            var start = rt ? 3 : 0;
-                            startIndex = start;
-                            for (var i = start; i < tweetTxt.Length; i++)
+                            for (var j = i + 1; j < tweetTxt.Length; j++)
                             {
-                                var character = tweetTxt[i];
-
-                                if (character == '@')
-                                {
-                                    for (var j = i + 1; j < tweetTxt.Length; j++)
-                                    {
-                                        if (tweetTxt[j] == ' ' && j > i + 1)
-                                        {
-                                            startIndex = j + 1;
-                                            i = j;
-                                            break;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                                if (tweetTxt[j] != ' ' || j <= i + 1) continue;
+                                
+                                startIndex = j + 1;
+                                i = j;
+                                break;
                             }
                         }
-
-                        //if (tweetTxt == "" && tweetTxt == " " && tweetTxt != Environment.NewLine) continue;
-                        
-                        try
+                        else
                         {
-                            outputFile.WriteLine($"<|startoftext|> {tweetTxt.Substring(startIndex)} <|endoftext|>");
-                        }
-                        catch (EncoderFallbackException e)
-                        {
-                            Console.WriteLine(e.Message);
+                            break;
                         }
                     }
                 }
-                outputFile.Close();
+
+                //if (tweetTxt == "" && tweetTxt == " " && tweetTxt != Environment.NewLine) continue;
+                        
+                try
+                {
+                    outputFile.WriteLine($"<|startoftext|> {tweetTxt.Substring(startIndex)} <|endoftext|>");
+                }
+                catch (EncoderFallbackException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
+            outputFile.Close();
         }
 
         /*static void Main(string[] args)

@@ -28,12 +28,11 @@ namespace LFGBot
 
         private async Task HandleCommandAsync(SocketMessage arg)
         {
-            var msg = arg as SocketUserMessage;
-            if (msg == null) return;
+            if (!(arg is SocketUserMessage msg)) return;
 
             if (msg.Author.Id == _client.CurrentUser.Id || msg.Author.IsBot) return;
         
-            int pos = 0;
+            var pos = 0;
             if (msg.HasCharPrefix('=', ref pos) /* || msg.HasMentionPrefix(_client.CurrentUser, ref pos) */)
             {
                 var context = new SocketCommandContext(_client, msg);

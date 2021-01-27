@@ -15,7 +15,9 @@ namespace LFGBot
         private readonly CommandService _commands;
         
         private readonly IServiceProvider _services;
-        
+
+        public static bool TestBot = false;
+
         public Initialize()
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -78,6 +80,8 @@ namespace LFGBot
                 case LogSeverity.Debug:
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             Console.WriteLine($"{DateTime.Now,-19} [{message.Severity,8}] {message.Source}: {message.Message} {message.Exception}");
             Console.ResetColor();
@@ -99,10 +103,8 @@ namespace LFGBot
                 await handler.InitCommands();
 
             await _client.LoginAsync(
-                TokenType.Bot, Environment.GetEnvironmentVariable("DiscordToken")
+                TokenType.Bot, Environment.GetEnvironmentVariable(TestBot ? "LFGBotTestToken" : "LFGBotToken")
             );
-
-            //Environment.GetEnvironmentVariable("TestDiscordToken"));
             
             await _client.StartAsync();
 

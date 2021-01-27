@@ -8,6 +8,7 @@ using LFGBot.Services;
 
 namespace LFGBot.Modules
 {
+    [Group("board")]
     public class BoardModule : ModuleBase<SocketCommandContext>
     {
         private readonly BoardService _boardService;
@@ -15,6 +16,12 @@ namespace LFGBot.Modules
         public BoardModule(BoardService deepService)
         {
             _boardService = deepService;
+        }
+
+        [Command("create")]
+        public async Task CreateBoard()
+        {
+            
         }
         
         [Command("quote")]

@@ -492,3 +492,8 @@ modules.xml
 # Android studio 3.1+ serialized cache file
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider,intellij+all
+
+# LFGBot
+LFGBotUtils/TargetJson
+LFGBotUtils/Output
+LFGBotUtils/Misc
