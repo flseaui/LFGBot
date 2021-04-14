@@ -16,9 +16,9 @@ namespace LFGBot
         
         private readonly IServiceProvider _services;
 
-        public static bool TestBot = false;
-
-        public Initialize()
+        private Config _config;
+        
+        public Initialize(Config config)
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
@@ -46,7 +46,9 @@ namespace LFGBot
             _client.Disconnected += OnDisconnect;
         
             _commands.Log += Log;
-        
+
+            _config = config;
+            
             _services = ConfigureServices();
         }
         
@@ -55,7 +57,9 @@ namespace LFGBot
             var map = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
-                .AddSingleton<OldDeepService>()
+                .AddSingleton(_config)
+                .AddSingleton<StatsService>()
+                .AddSingleton<DeepService>()
                 .AddSingleton<BoardService>()
                 .AddSingleton<CommandHandler>();
             
@@ -103,12 +107,32 @@ namespace LFGBot
                 await handler.InitCommands();
 
             await _client.LoginAsync(
-                TokenType.Bot, Environment.GetEnvironmentVariable(TestBot ? "LFGBotTestToken" : "LFGBotToken")
+                TokenType.Bot, _config.CurrentToken
             );
             
             await _client.StartAsync();
 
-            await Task.Delay(Timeout.Infinite);
+            await Task.Run(ProcessCommands);
+        }
+
+        private void ProcessCommands()
+        {
+            var keepRunning = true;
+            while (keepRunning)
+            {
+                var command = Console.ReadLine();
+
+                switch (command?.ToLower())
+                {
+                    case "stop" or "s":
+                        _services.GetService<DeepService>()?.StopService();
+                        keepRunning = false;
+                        break;
+                    case "change" or "c":
+                        _services.GetService<DeepService>()?.QueueMessage();
+                        break;
+                }
+            }
         }
     }
 }

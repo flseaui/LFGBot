@@ -2,8 +2,9 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <LangVersion>preview</LangVersion>
+        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,7 +12,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TargetJson" />
+      <Compile Remove="TargetJson\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="TargetJson\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TargetJson\**" />
     </ItemGroup>
 
 </Project>

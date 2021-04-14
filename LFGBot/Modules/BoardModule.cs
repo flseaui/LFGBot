@@ -19,12 +19,14 @@ namespace LFGBot.Modules
         }
 
         [Command("create")]
+        [RequireOwner]
         public async Task CreateBoard()
         {
             
         }
         
         [Command("quote")]
+        [RequireOwner]
         public async Task RandomMessage()
         {
             var message = _boardService.GetUniqueRandomMessage(729759705190367273);

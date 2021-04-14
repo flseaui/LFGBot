@@ -23,6 +23,7 @@ namespace LFGBot.Modules
 
         [Command("random")]
         [Summary("Sends a random piece of media that has been posted in lfg")]
+        [RequireOwner]
         public async Task RandomImage()
         {
             var index = _random.Next(0, _files.Length - 1);
